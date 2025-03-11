@@ -6,6 +6,7 @@ import { Play, Pause, Volume2, VolumeX, Maximize, SkipForward, SkipBack } from "
 import { Slider } from "@/components/ui/slider"
 import { Button } from "@/components/ui/button"
 import { cn } from "@/lib/utils"
+import { motion, AnimatePresence } from "framer-motion"
 
 interface VideoPlayerProps {
   videoId: string
@@ -83,16 +84,21 @@ export default function VideoPlayer({ videoId, thumbnail }: VideoPlayerProps) {
 
   return (
     <div
-      className="relative aspect-video w-full overflow-hidden rounded-lg bg-black"
+      className="relative aspect-video w-full overflow-hidden rounded-lg bg-gray-900"
       onMouseEnter={() => setShowControls(true)}
       onMouseLeave={() => isPlaying && setShowControls(false)}
     >
       {!isPlaying && (
         <div className="absolute inset-0 z-10 flex items-center justify-center">
           <Image src={thumbnail || "/placeholder.svg"} alt="Video thumbnail" fill className="object-cover" priority />
-          <Button onClick={togglePlay} className="h-16 w-16 rounded-full bg-primary/90 hover:bg-primary">
-            <Play className="h-8 w-8 fill-primary-foreground text-primary-foreground" />
-          </Button>
+          <motion.button
+            onClick={togglePlay}
+            className="flex h-16 w-16 items-center justify-center rounded-full bg-white/90 text-gray-900 hover:bg-white"
+            whileHover={{ scale: 1.1 }}
+            whileTap={{ scale: 0.9 }}
+          >
+            <Play className="h-8 w-8" />
+          </motion.button>
         </div>
       )}
 
@@ -106,63 +112,77 @@ export default function VideoPlayer({ videoId, thumbnail }: VideoPlayerProps) {
         Your browser does not support the video tag.
       </video>
 
-      <div
-        className={cn(
-          "absolute inset-x-0 bottom-0 z-20 bg-gradient-to-t from-black/80 to-transparent p-4 transition-opacity duration-300",
-          showControls ? "opacity-100" : "opacity-0",
-        )}
-      >
-        <Slider
-          value={[progress]}
-          max={100}
-          step={0.1}
-          onValueChange={handleProgressChange}
-          className="mb-4 [&>span:first-child]:h-1 [&>span:first-child]:bg-gray-600 [&_[role=slider]]:h-3 [&_[role=slider]]:w-3 [&_[role=slider]]:border-0 [&_[role=slider]]:bg-white [&>span:first-child_span]:bg-primary"
-        />
-
-        <div className="flex items-center justify-between">
-          <div className="flex items-center gap-2">
-            <Button variant="ghost" size="icon" onClick={togglePlay} className="h-8 w-8 text-white hover:bg-white/20">
-              {isPlaying ? <Pause className="h-5 w-5" /> : <Play className="h-5 w-5" />}
-            </Button>
-
-            <Button variant="ghost" size="icon" className="h-8 w-8 text-white hover:bg-white/20">
-              <SkipBack className="h-5 w-5" />
-            </Button>
-
-            <Button variant="ghost" size="icon" className="h-8 w-8 text-white hover:bg-white/20">
-              <SkipForward className="h-5 w-5" />
-            </Button>
-
-            <div className="flex items-center gap-2">
-              <Button variant="ghost" size="icon" onClick={toggleMute} className="h-8 w-8 text-white hover:bg-white/20">
-                {isMuted ? <VolumeX className="h-5 w-5" /> : <Volume2 className="h-5 w-5" />}
-              </Button>
-
-              <Slider
-                value={[volume]}
-                max={100}
-                onValueChange={handleVolumeChange}
-                className="w-24 [&>span:first-child]:h-1 [&>span:first-child]:bg-gray-600 [&_[role=slider]]:h-3 [&_[role=slider]]:w-3 [&_[role=slider]]:border-0 [&_[role=slider]]:bg-white [&>span:first-child_span]:bg-white"
-              />
-            </div>
-
-            <div className="ml-2 text-sm text-gray-300">
-              {videoRef.current ? formatTime(videoRef.current.currentTime) : "0:00"} /
-              {videoRef.current ? formatTime(videoRef.current.duration || 0) : "0:00"}
-            </div>
-          </div>
-
-          <Button
-            variant="ghost"
-            size="icon"
-            onClick={handleFullscreen}
-            className="h-8 w-8 text-white hover:bg-white/20"
+      <AnimatePresence>
+        {showControls && (
+          <motion.div
+            initial={{ opacity: 0 }}
+            animate={{ opacity: 1 }}
+            exit={{ opacity: 0 }}
+            className={cn("absolute inset-x-0 bottom-0 z-20 bg-gradient-to-t from-black/80 to-transparent p-4")}
           >
-            <Maximize className="h-5 w-5" />
-          </Button>
-        </div>
-      </div>
+            <Slider
+              value={[progress]}
+              max={100}
+              step={0.1}
+              onValueChange={handleProgressChange}
+              className="mb-4 [&>span:first-child]:h-1 [&>span:first-child]:bg-gray-600 [&_[role=slider]]:h-3 [&_[role=slider]]:w-3 [&_[role=slider]]:border-0 [&_[role=slider]]:bg-white [&>span:first-child_span]:bg-white"
+            />
+
+            <div className="flex items-center justify-between">
+              <div className="flex items-center gap-2">
+                <Button
+                  variant="ghost"
+                  size="icon"
+                  onClick={togglePlay}
+                  className="h-8 w-8 text-white hover:bg-white/20"
+                >
+                  {isPlaying ? <Pause className="h-5 w-5" /> : <Play className="h-5 w-5" />}
+                </Button>
+
+                <Button variant="ghost" size="icon" className="h-8 w-8 text-white hover:bg-white/20">
+                  <SkipBack className="h-5 w-5" />
+                </Button>
+
+                <Button variant="ghost" size="icon" className="h-8 w-8 text-white hover:bg-white/20">
+                  <SkipForward className="h-5 w-5" />
+                </Button>
+
+                <div className="flex items-center gap-2">
+                  <Button
+                    variant="ghost"
+                    size="icon"
+                    onClick={toggleMute}
+                    className="h-8 w-8 text-white hover:bg-white/20"
+                  >
+                    {isMuted ? <VolumeX className="h-5 w-5" /> : <Volume2 className="h-5 w-5" />}
+                  </Button>
+
+                  <Slider
+                    value={[volume]}
+                    max={100}
+                    onValueChange={handleVolumeChange}
+                    className="w-24 [&>span:first-child]:h-1 [&>span:first-child]:bg-gray-600 [&_[role=slider]]:h-3 [&_[role=slider]]:w-3 [&_[role=slider]]:border-0 [&_[role=slider]]:bg-white [&>span:first-child_span]:bg-white"
+                  />
+                </div>
+
+                <div className="ml-2 text-sm text-gray-300">
+                  {videoRef.current ? formatTime(videoRef.current.currentTime) : "0:00"} /
+                  {videoRef.current ? formatTime(videoRef.current.duration || 0) : "0:00"}
+                </div>
+              </div>
+
+              <Button
+                variant="ghost"
+                size="icon"
+                onClick={handleFullscreen}
+                className="h-8 w-8 text-white hover:bg-white/20"
+              >
+                <Maximize className="h-5 w-5" />
+              </Button>
+            </div>
+          </motion.div>
+        )}
+      </AnimatePresence>
     </div>
   )
 }
