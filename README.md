@@ -2,7 +2,7 @@
 
 CoursePlatform é uma aplicação web moderna para hospedagem e visualização de cursos online, inspirada na interface do Apple TV. A plataforma permite aos usuários navegar por cursos, filtrar por categorias, pesquisar e assistir vídeos.
 
-![CoursePlatform Screenshot](https://via.placeholder.com/800x400)
+
 
 ## Características
 
@@ -28,7 +28,7 @@ CoursePlatform é uma aplicação web moderna para hospedagem e visualização d
 
 ```bash
 # Clone o repositório
-git clone https://github.com/seu-usuario/course-platform.git
+git clone https://github.com/gabrielfpaiva/course-platform.git
 
 # Entre no diretório
 cd course-platform
