@@ -84,7 +84,7 @@ export default function VideoPlayer({ videoId, thumbnail }: VideoPlayerProps) {
 
   return (
     <div
-      className="relative aspect-video w-full overflow-hidden rounded-lg bg-gray-900"
+      className="relative aspect-video w-full overflow-hidden rounded-lg bg-muted"
       onMouseEnter={() => setShowControls(true)}
       onMouseLeave={() => isPlaying && setShowControls(false)}
     >
@@ -93,7 +93,7 @@ export default function VideoPlayer({ videoId, thumbnail }: VideoPlayerProps) {
           <Image src={thumbnail || "/placeholder.svg"} alt="Video thumbnail" fill className="object-cover" priority />
           <motion.button
             onClick={togglePlay}
-            className="flex h-16 w-16 items-center justify-center rounded-full bg-white/90 text-gray-900 hover:bg-white"
+            className="flex h-16 w-16 items-center justify-center rounded-full bg-primary text-primary-foreground"
             whileHover={{ scale: 1.1 }}
             whileTap={{ scale: 0.9 }}
           >
@@ -118,14 +118,14 @@ export default function VideoPlayer({ videoId, thumbnail }: VideoPlayerProps) {
             initial={{ opacity: 0 }}
             animate={{ opacity: 1 }}
             exit={{ opacity: 0 }}
-            className={cn("absolute inset-x-0 bottom-0 z-20 bg-gradient-to-t from-black/80 to-transparent p-4")}
+            className={cn("absolute inset-x-0 bottom-0 z-20 bg-gradient-to-t from-background/80 to-transparent p-4")}
           >
             <Slider
               value={[progress]}
               max={100}
               step={0.1}
               onValueChange={handleProgressChange}
-              className="mb-4 [&>span:first-child]:h-1 [&>span:first-child]:bg-gray-600 [&_[role=slider]]:h-3 [&_[role=slider]]:w-3 [&_[role=slider]]:border-0 [&_[role=slider]]:bg-white [&>span:first-child_span]:bg-white"
+              className="mb-4 [&>span:first-child]:h-1 [&>span:first-child]:bg-muted-foreground/50 [&_[role=slider]]:h-3 [&_[role=slider]]:w-3 [&_[role=slider]]:border-0 [&_[role=slider]]:bg-primary [&>span:first-child_span]:bg-primary"
             />
 
             <div className="flex items-center justify-between">
@@ -134,16 +134,16 @@ export default function VideoPlayer({ videoId, thumbnail }: VideoPlayerProps) {
                   variant="ghost"
                   size="icon"
                   onClick={togglePlay}
-                  className="h-8 w-8 text-white hover:bg-white/20"
+                  className="h-8 w-8 text-foreground hover:bg-background/20"
                 >
                   {isPlaying ? <Pause className="h-5 w-5" /> : <Play className="h-5 w-5" />}
                 </Button>
 
-                <Button variant="ghost" size="icon" className="h-8 w-8 text-white hover:bg-white/20">
+                <Button variant="ghost" size="icon" className="h-8 w-8 text-foreground hover:bg-background/20">
                   <SkipBack className="h-5 w-5" />
                 </Button>
 
-                <Button variant="ghost" size="icon" className="h-8 w-8 text-white hover:bg-white/20">
+                <Button variant="ghost" size="icon" className="h-8 w-8 text-foreground hover:bg-background/20">
                   <SkipForward className="h-5 w-5" />
                 </Button>
 
@@ -152,7 +152,7 @@ export default function VideoPlayer({ videoId, thumbnail }: VideoPlayerProps) {
                     variant="ghost"
                     size="icon"
                     onClick={toggleMute}
-                    className="h-8 w-8 text-white hover:bg-white/20"
+                    className="h-8 w-8 text-foreground hover:bg-background/20"
                   >
                     {isMuted ? <VolumeX className="h-5 w-5" /> : <Volume2 className="h-5 w-5" />}
                   </Button>
@@ -161,11 +161,11 @@ export default function VideoPlayer({ videoId, thumbnail }: VideoPlayerProps) {
                     value={[volume]}
                     max={100}
                     onValueChange={handleVolumeChange}
-                    className="w-24 [&>span:first-child]:h-1 [&>span:first-child]:bg-gray-600 [&_[role=slider]]:h-3 [&_[role=slider]]:w-3 [&_[role=slider]]:border-0 [&_[role=slider]]:bg-white [&>span:first-child_span]:bg-white"
+                    className="w-24 [&>span:first-child]:h-1 [&>span:first-child]:bg-muted-foreground/50 [&_[role=slider]]:h-3 [&_[role=slider]]:w-3 [&_[role=slider]]:border-0 [&_[role=slider]]:bg-primary [&>span:first-child_span]:bg-primary"
                   />
                 </div>
 
-                <div className="ml-2 text-sm text-gray-300">
+                <div className="ml-2 text-sm text-foreground">
                   {videoRef.current ? formatTime(videoRef.current.currentTime) : "0:00"} /
                   {videoRef.current ? formatTime(videoRef.current.duration || 0) : "0:00"}
                 </div>
@@ -175,7 +175,7 @@ export default function VideoPlayer({ videoId, thumbnail }: VideoPlayerProps) {
                 variant="ghost"
                 size="icon"
                 onClick={handleFullscreen}
-                className="h-8 w-8 text-white hover:bg-white/20"
+                className="h-8 w-8 text-foreground hover:bg-background/20"
               >
                 <Maximize className="h-5 w-5" />
               </Button>
