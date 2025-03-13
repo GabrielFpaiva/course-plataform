@@ -11,7 +11,7 @@ const inter = Inter({ subsets: ["latin"] })
 export const metadata: Metadata = {
   title: "CoursePlatform",
   description: "Learn from the best courses online",
-    generator: 'v0.dev'
+    generator: 'g7.dev'
 }
 
 export default function RootLayout({
