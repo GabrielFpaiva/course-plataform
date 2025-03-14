@@ -10,8 +10,11 @@ interface CoursePageProps {
   }
 }
 
+export const dynamicParams = true;
+
 export default async function CoursePage({ params }: CoursePageProps) {
   const course = getCourses().find((c) => c.id === params.id)
+  console.log("Cursos disponíveis:", course)
 
   if (!course) {
     return <div className="container py-12 text-center">Course not found</div>
